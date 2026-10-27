@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CalTrack</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#1b2333;--mu:#667189;--a-l:#4f46e5;--a-d:#818cf8;--pr:var(--a-l);--on:#fff;--r:20px;--rb:14px;--ok:#15803d;--bad:#dc2626;--ln:#e3e7f1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1420;--card:#192031;--tx:#eef1f8;--mu:#9aa5bf;--pr:var(--a-d);--on:#0b1020;--ok:#4ade80;--bad:#f87171;--ln:#2a3350;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1420;--card:#192031;--tx:#eef1f8;--mu:#9aa5bf;--pr:var(--a-d);--on:#0b1020;--ok:#4ade80;--bad:#f87171;--ln:#2a3350;color-scheme:dark}
+:root[data-accent=ocean]{--a-l:#0284c7;--a-d:#38bdf8}:root[data-accent=forest]{--a-l:#15803d;--a-d:#4ade80}:root[data-accent=sunset]{--a-l:#ea580c;--a-d:#fb923c}:root[data-accent=rose]{--a-l:#e11d48;--a-d:#fb7185}:root[data-accent=violet]{--a-l:#9333ea;--a-d:#c084fc}:root[data-accent=teal]{--a-l:#0d9488;--a-d:#2dd4bf}
+:root[data-corner=sharp]{--r:6px;--rb:4px}:root[data-corner=pill]{--r:28px;--rb:999px}
+:root[data-btn=gradient] main button:not(.sec):not(.dng):not(.sw),:root[data-btn=gradient] .sheet button:not(.sec):not(.dng){background:linear-gradient(135deg,var(--pr),color-mix(in srgb,var(--pr) 55%,#ec4899))}
+:root[data-tint=on] body{background:color-mix(in srgb,var(--pr) 9%,var(--bg))}
+:root[data-size=small] body{font-size:14px}:root[data-size=large] body{font-size:18px}
+.sw{width:44px;height:44px;border-radius:50%;padding:0;border:3px solid transparent}.sw.on{border-color:var(--tx)}.swr{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 4px}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:16px 14px 96px}
+h1{font-size:40px;margin:2px 0;line-height:1.1}h2{font-size:18px;margin:18px 0 8px}h3{margin:0}
+small{color:var(--mu);font-size:11px;letter-spacing:.06em;font-weight:600;display:block}
+.card{background:var(--card);border-radius:var(--r);padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(30,40,80,.08);}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.two b{font-size:22px}.ok{color:var(--ok)}.bad{color:var(--bad)}.mu{color:var(--mu)}
+.ring{width:96px;height:96px;flex:none}
+button,.btn{font:inherit;border:0;border-radius:var(--rb);padding:12px 16px;min-height:46px;background:var(--pr);color:var(--on);font-weight:600;cursor:pointer}
+button.sec{background:var(--ln);color:var(--tx)}button.dng{background:var(--bad)}button.sm{min-height:36px;padding:6px 12px;font-size:14px}
+.acts{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0}
+input,select{font:inherit;width:100%;padding:12px;border-radius:var(--rb);border:1px solid var(--ln);background:var(--bg);color:var(--tx);min-height:46px}
+label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px}
+.chip{display:inline-block;padding:8px 14px;border-radius:999px;background:var(--ln);font-weight:600;font-size:14px;margin-top:10px}
+.chip.w{background:var(--pr);color:var(--on)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--ln);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{background:none;color:var(--mu);flex:1;max-width:140px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;padding:6px}
+nav button.on{color:var(--pr)}svg{display:block}
+.ent{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--ln)}.ent:last-child{border:0}
+.warn{background:#fef3c7;color:#78350f;border-radius:12px;padding:10px 12px;margin:8px 0;font-size:14px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sheet{background:var(--card);width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+.err{color:var(--bad);font-size:14px;min-height:18px}.tabs{display:flex;gap:6px;margin:8px 0}.tabs button{flex:1;padding:8px;min-height:38px}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.days button{padding:8px 0;min-height:40px;font-size:13px}
+@media(min-width:700px){.acts{grid-template-columns:repeat(3,1fr)}}
+</style></head><body>
+<div id="app"></div>
+<script src="https://cdn.jsdelivr.net/npm/dexie@3.2.7/dist/dexie.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,today=()=>ymd(new Date());
+const parse=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return ymd(d)};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const n=x=>(Math.round(x*10)/10).toLocaleString(),dayN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const fd=s=>{const d=parse(s),f=S.s&&S.s.dateFmt;if(f==='dmy')return`${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;if(f==='mdy')return`${pad(d.getMonth()+1)}/${pad(d.getDate())}/${d.getFullYear()}`;return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})};
+const sgn=x=>(x<0?'−':x>0?'+':'')+Math.abs(x).toFixed(1);
+/* ---------- calculations (pure) ---------- */
+const FACT={sedentary:1.2,light:1.375,moderate:1.55,very:1.725,extreme:1.9};
+const ACT={sedentary:'Sedentary',light:'Lightly active',moderate:'Moderately active',very:'Very active',extreme:'Extremely active'};
+const bmr=p=>10*p.weight+6.25*p.height-5*p.age+(p.sex==='male'?5:-161);
+const maint=p=>Math.round(bmr(p)*FACT[p.activity]);
+function goalTarget(p,s){const m=maint(p);if(p.age<18||!p.goal)return m;return p.goal==='lose'?m-s.deficit:p.goal==='gain'?m+s.surplus:m}
+function split(t,workDays,diff){if(workDays===0||workDays===7)return{work:t,rest:t};const rest=Math.round(t-diff*workDays/7);return{work:rest+diff,rest}}
+function warnings(p,t){const w=[];if(p.age<18)w.push('You are under 18, so CalTrack does not give a weight-loss target. Please ask a doctor or dietitian. The number shown is only a maintenance estimate.');
+ if(!p.goal)w.push('No goal is set, so the target equals your estimated maintenance calories.');
+ const floor=p.sex==='male'?1500:1200;if(t<floor)w.push(`This target (${n(t)} kcal) is below ${floor} kcal, which is unusually low for an adult. It is not presented as safe. Please talk to a doctor or dietitian before eating this little.`);
+ w.push('These are estimates. Real needs can differ by a few hundred calories per day.');return w}
+const eatenOn=(es,d)=>es.filter(e=>e.date===d).reduce((a,e)=>a+e.kcal,0);
+const remaining=(t,e)=>t-e;
+function weightInfo(ws,d){const i=ws.findIndex(x=>x.date===d);if(i<0)return null;const prev=ws.filter(x=>x.date<d).pop()||null;return{w:ws[i],prev,diff:prev?Math.round((ws[i].kg-prev.kg)*10)/10:null}}
+/* ---------- storage ---------- */
+const db=new Dexie('caltrack');db.version(1).stores({kv:'key',entries:'id,date',weights:'date'});
+const S={p:null,s:null,over:{},entries:[],weights:[],view:'home',hdate:today(),period:30,modal:null,step:0,draft:{},err:'',pt:null};
+const defaults=()=>({same:false,deficit:400,surplus:300,diff:200,daily:0,work:0,rest:0,manual:false,schedule:[0,1,1,0,1,1,0],theme:'auto',dateFmt:'long',accent:'indigo',corner:'round',btn:'solid',tint:'off',size:'normal'});
+const kv=(k,v)=>db.kv.put({key:k,value:v});
+const sortW=()=>S.weights.sort((a,b)=>a.date<b.date?-1:1);
+async function load(){const g=async k=>{const r=await db.kv.get(k);return r&&r.value};S.p=(await g('profile'))||null;S.s=Object.assign(defaults(),await g('settings')||{});S.over=(await g('over'))||{};S.entries=await db.entries.toArray();S.weights=sortW(await db.weights.toArray())}
+const nowW=()=>S.weights.length?S.weights[S.weights.length-1].kg:S.p.weight;
+function recalc(){const p=Object.assign({},S.p,{weight:nowW()}),s=S.s,t=goalTarget(p,s),wd=s.schedule.filter(Boolean).length,sp=split(t,wd,s.diff);s.daily=t;s.work=sp.work;s.rest=sp.rest;s.manual=false;return kv('settings',s)}
+const isWork=d=>d in S.over?S.over[d]:!!S.s.schedule[parse(d).getDay()];
+const targetFor=d=>S.s.same?S.s.daily:(isWork(d)?S.s.work:S.s.rest);
+/* ---------- views ---------- */
+const ic={home:'<path d="M3 10.5 12 3l9 7.5V21H3z"/>',weight:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10a4 4 0 0 1 8 0M12 10l2-2"/>',history:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',settings:'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>'};
+const svg=(p,s=22)=>`<svg width=${s} height=${s} viewBox="0 0 24 24" fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round>${p}</svg>`;
+const inp=(id,l,v='',a='')=>`<label for=${id}>${l}</label><input id=${id} value="${esc(v)}" ${a}>`;
+const sel=(id,l,o,v)=>`<label for=${id}>${l}</label><select id=${id}>${Object.entries(o).map(([k,t])=>`<option value=${k} ${k===v?'selected':''}>${t}</option>`).join('')}</select>`;
+const ACC={indigo:['Indigo','#4f46e5'],ocean:['Ocean','#0284c7'],forest:['Forest','#15803d'],sunset:['Sunset','#ea580c'],rose:['Rose','#e11d48'],violet:['Violet','#9333ea'],teal:['Teal','#0d9488']};
+const GOALS={lose:'Lose body fat',maintain:'Maintain weight',gain:'Gain weight',none:'Skip for now'};
+const SEX={male:'Male equation (+5)',female:'Female equation (−161)'};
+function schedBtns(sc){return`<div class=days>${sc.map((w,i)=>`<button class="${w?'':'sec'}" data-a=sched data-i=${i}>${dayN[i]}<br>${w?'Work':'Rest'}</button>`).join('')}</div>`}
+function wizard(){const d=S.draft,st=S.step;
+ return`<main><h2>Welcome to CalTrack</h2><p class=mu>Step ${st+1} of 2. Everything stays on this device.</p><div class=card>`+(st===0?
+ inp('age','Age (years)',d.age||'','type=number inputmode=numeric')+inp('height','Height (cm)',d.height||'','type=number inputmode=decimal')+inp('weight','Current weight (kg)',d.weight||'','type=number inputmode=decimal step=0.1')+sel('sex','Sex used for the calorie equation',SEX,d.sex||'male'):
+ sel('activity','Activity level',ACT,d.activity||'light')+sel('goal','Main goal',GOALS,d.goal||'maintain')+'<small style="margin-top:6px">Skipping the goal means your target equals maintenance calories. A goal is needed for a goal-specific target.</small><label>Workout days (tap to switch)</label>'+schedBtns(d.schedule||defaults().schedule))+
+ `<div class=err>${S.err}</div><div class=row>${st?'<button class=sec data-a=back>Back</button>':'<span></span>'}<button data-a=next>${st?'Finish':'Next'}</button></div></div></main>`}
+function dayBlock(d){const t=targetFor(d),e=eatenOn(S.entries,d),r=remaining(t,e),over=r<0,pct=t>0?Math.min(1,e/t):0,C=2*Math.PI*52;
+ const chip=S.s.same?'':`<button class="chip ${isWork(d)?'w':''}" data-a=toggle data-d=${d}>${d===today()?'TODAY: ':''}${isWork(d)?'WORKOUT DAY':'REST DAY'} · tap to change</button>`;
+ const list=S.entries.filter(x=>x.date===d).sort((a,b)=>a.created-b.created).map(x=>`<div class=ent><div><b>${n(x.kcal)} kcal</b><div class=mu style="font-size:13px">${esc(x.desc||'No description')} · ${new Date(x.created).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div><div><button class="sec sm" data-a=editcal data-id=${x.id}>Edit</button> <button class="sec sm" data-a=delcal data-id=${x.id}>Delete</button></div></div>`).join('');
+ return`<section class=card><div class=row><div><small>${d===today()?"TODAY'S":'TARGET FOR '+fd(d).toUpperCase()}</small><small>CALORIE TARGET</small><h1>${n(t)} kcal</h1></div><svg class=ring viewBox="0 0 120 120"><circle cx=60 cy=60 r=52 fill=none stroke="var(--ln)" stroke-width=10 /><circle cx=60 cy=60 r=52 fill=none stroke="${over?'var(--bad)':'var(--pr)'}" stroke-width=10 stroke-linecap=round stroke-dasharray="${C*pct} ${C}" transform="rotate(-90 60 60)"/></svg></div>
+ <div class=two><div><small>CALORIES CONSUMED</small><b>${n(e)} kcal</b></div><div><small>${over?'OVER TARGET':'CALORIES REMAINING'}</small><b class="${over?'bad':'ok'}">${n(Math.abs(r))} kcal</b></div></div>${chip}</section>
+ <div class=acts><button data-a=addcal data-d=${d}>+ ADD CALORIES</button></div><section class=card><h3>Entries</h3>${list||'<p class=mu>No calories logged for this day.</p>'}</section>`}
+function wtText(d){const i=weightInfo(S.weights,d);if(!i)return'<p class=mu>No weight logged for this date.</p>';
+ const c=i.diff===null?'<span class=mu>Comparison unavailable: no earlier measurement.</span>':i.diff===0?`No change since ${fd(i.prev.date)}.`:`<b>${sgn(i.diff)} kg</b> · ${Math.abs(i.diff).toFixed(1)} kg ${i.diff<0?'down':'up'} since the previous entry (${fd(i.prev.date)})`;
+ return`<b style="font-size:26px">${i.w.kg.toFixed(1)} kg</b><div>${c}</div>`}
+const views={
+ home(){const last=S.weights[S.weights.length-1];
+  return`<div class=row><div><h2 style="margin:0">CalTrack</h2><span class=mu>${fd(today())}</span></div></div>${dayBlock(today())}
+  <section class=card><small>CURRENT WEIGHT${last?' · '+fd(last.date):''}</small>${last?wtText(last.date):'<p class=mu>No weight logged yet.</p>'}<div class=acts><button data-a=addwt data-d=${today()}>+ LOG TODAY'S WEIGHT</button><button class=sec data-a=nav data-v=weight>VIEW WEIGHT HISTORY</button><button class=sec data-a=target>EDIT CALORIE TARGET</button></div></section>`},
+ weight(){const ws=S.weights;if(!ws.length)return`<h2>Weight</h2><div class=card><p>No weight history yet. Log your first weight to start the graph.</p><button data-a=addwt data-d=${today()}>+ LOG TODAY'S WEIGHT</button></div>`;
+  const first=ws[0],last=ws[ws.length-1],tot=last.kg-first.kg,hi=Math.max(...ws.map(x=>x.kg)),lo=Math.min(...ws.map(x=>x.kg));
+  const from=S.period?addDays(today(),-(S.period-1)):'0000',pts=ws.filter(x=>x.date>=from);
+  let chart='<p class=mu>No measurements in this period.</p>';
+  if(pts.length){const W=340,H=170,L=38,R=10,T=10,B=24,ts=pts.map(x=>parse(x.date).getTime()),t0=Math.min(...ts),t1=Math.max(...ts),ks=pts.map(x=>x.kg);let a=Math.min(...ks)-.5,b=Math.max(...ks)+.5;
+   const X=t=>t1===t0?(L+W-R)/2:L+(t-t0)/(t1-t0)*(W-L-R),Y=k=>T+(b-k)/(b-a)*(H-T-B);
+   chart=`<svg viewBox="0 0 ${W} ${H}" width=100% role=img aria-label="Weight graph"><text x=2 y=${T+8} font-size=10 fill=var(--mu)>${b.toFixed(1)}</text><text x=2 y=${H-B} font-size=10 fill=var(--mu)>${a.toFixed(1)}</text><line x1=${L} x2=${W-R} y1=${H-B+4} y2=${H-B+4} stroke=var(--ln)/><polyline fill=none stroke=var(--pr) stroke-width=2 points="${pts.map(x=>X(parse(x.date).getTime())+','+Y(x.kg)).join(' ')}"/>${pts.map(x=>`<circle data-a=pt data-d=${x.date} cx=${X(parse(x.date).getTime())} cy=${Y(x.kg)} r=${S.pt===x.date?7:5} fill=var(--pr) stroke=var(--card) stroke-width=2 style="cursor:pointer"/>`).join('')}<text x=${L} y=${H-4} font-size=10 fill=var(--mu)>${fd(pts[0].date)}</text><text x=${W-R} y=${H-4} font-size=10 fill=var(--mu) text-anchor=end>${fd(pts[pts.length-1].date)}</text></svg><div class=mu style="min-height:22px">${S.pt&&pts.find(x=>x.date===S.pt)?`${fd(S.pt)}: <b class=ok style="color:var(--tx)">${pts.find(x=>x.date===S.pt).kg.toFixed(1)} kg</b>`:'Tap a point to see the exact weight.'}</div>`}
+  return`<h2>Weight</h2><div class=card><button data-a=addwt data-d=${today()}>+ LOG / EDIT WEIGHT</button><div class=two><div><small>STARTING</small><b>${first.kg.toFixed(1)} kg</b></div><div><small>LATEST</small><b>${last.kg.toFixed(1)} kg</b></div><div><small>TOTAL CHANGE</small><b>${sgn(tot)} kg (${(tot/first.kg*100).toFixed(1)}%)</b></div><div><small>HIGH / LOW</small><b>${hi.toFixed(1)} / ${lo.toFixed(1)}</b></div></div></div>
+  <div class=card><div class=tabs>${[[7,'7d'],[30,'30d'],[90,'90d'],[0,'All']].map(([v,l])=>`<button class="${S.period===v?'':'sec'}" data-a=period data-v=${v}>${l}</button>`).join('')}</div>${chart}<small>A single increase is usually water and food weight, not fat. Look at the trend.</small></div>
+  <div class=card><h3>History</h3>${[...ws].reverse().map(x=>{const i=weightInfo(ws,x.date);return`<div class=ent><div><b>${x.kg.toFixed(1)} kg</b><div class=mu style="font-size:13px">${fd(x.date)} · ${i.diff===null?'first entry':sgn(i.diff)+' kg vs '+fd(i.prev.date)}</div></div><div><button class="sec sm" data-a=addwt data-d=${x.date}>Edit</button> <button class="sec sm" data-a=delwt data-d=${x.date}>Delete</button></div></div>`}).join('')}</div>`},
+ history(){const d=S.hdate;return`<h2>History</h2><div class=card><label for=hd>Choose a date</label><input id=hd type=date value=${d} max=${today()} data-a=hdate></div>${dayBlock(d)}<section class=card><small>BODY WEIGHT · ${fd(d)}</small>${wtText(d)}<div class=acts><button class=sec data-a=addwt data-d=${d}>${weightInfo(S.weights,d)?'EDIT':'ADD'} WEIGHT FOR THIS DATE</button></div></section>`},
+ settings(){const p=S.p,s=S.s,m=maint(Object.assign({},p,{weight:nowW()})),W=warnings(Object.assign({},p,{weight:nowW()}),s.daily);
+  return`<h2>Settings</h2><div class=card><h3>Personal information</h3>${inp('age','Age',p.age,'type=number')}${inp('height','Height (cm)',p.height,'type=number')}${inp('weight','Current weight (kg)',nowW(),'type=number step=0.1')}${sel('sex','Sex used for the calorie equation',SEX,p.sex)}${sel('activity','Activity level',ACT,p.activity)}${sel('goal','Goal',GOALS,p.goal||'none')}<div class=err>${S.err}</div><button data-a=saveprof>Save details</button></div>
+  <div class=card><h3>Calorie estimates</h3><div class=two><div><small>ESTIMATED BMR</small><b>${n(bmr(Object.assign({},p,{weight:nowW()})))}</b></div><div><small>MAINTENANCE</small><b>${n(m)}</b></div><div><small>GOAL</small><b>${GOALS[p.goal||'none']}</b></div><div><small>RECOMMENDED TARGET</small><b>${n(goalTarget(Object.assign({},p,{weight:nowW()}),s))}</b></div></div>${W.map(x=>`<div class=warn>${x}</div>`).join('')}
+  <label>Daily target</label><div class=mu>${s.same?'Same every day: '+n(s.daily)+' kcal':'Workout '+n(s.work)+' kcal · Rest '+n(s.rest)+' kcal'}${s.manual?' (custom)':''}</div><div class=acts><button data-a=target>Edit targets manually</button><button class=sec data-a=recalc>Recalculate from my details</button></div>
+  ${inp('deficit','Fat-loss deficit (kcal/day)',s.deficit,'type=number')}${inp('surplus','Weight-gain surplus (kcal/day)',s.surplus,'type=number')}${inp('diff','Workout vs rest difference (kcal)',s.diff,'type=number')}<button class="sec" style="margin-top:8px" data-a=savecfg>Save these numbers</button></div>
+  <div class=card><h3>Workout schedule</h3><p class=mu>Tap a day to switch between workout and rest.</p>${schedBtns(s.schedule)}</div>
+  <div class=card><h3>Appearance</h3><label>Accent colour</label><div class=swr>${Object.entries(ACC).map(([k,v])=>`<button class="sw ${s.accent===k?'on':''}" style="background:${v[1]}" data-a=accent data-k=${k} aria-label="${v[0]}"></button>`).join('')}</div>${sel('corner','Corners',{round:'Rounded',sharp:'Sharp',pill:'Pill'},s.corner)}${sel('btn','Button style',{solid:'Solid',gradient:'Gradient'},s.btn)}${sel('tint','Tinted background',{off:'Off',on:'On'},s.tint)}${sel('size','Text size',{small:'Small',normal:'Normal',large:'Large'},s.size)}</div>
+  <div class=card><h3>Preferences</h3>${sel('theme','Theme',{auto:'Match device',light:'Light',dark:'Dark'},s.theme)}${sel('dfmt','Date format',{long:'27 Oct 2026',dmy:'27/10/2026',mdy:'10/27/2026'},s.dateFmt)}<label>Weight unit</label><div class=mu>Kilograms</div><button class=sec style="margin-top:10px" data-a=saveprefs>Save preferences</button></div>
+  <div class=card><h3>Your data</h3><div class=acts><button class=sec data-a=export>Export backup (JSON)</button><label class="btn sec" style="margin:0;text-align:center;display:block;background:var(--ln);color:var(--tx)">Import backup<input type=file accept=application/json id=imp style="display:none"></label><button class=dng data-a=reset>Reset all data</button></div></div>`}};
+function modal(){const m=S.modal;let body='';
+ if(m.t==='cal')body=`<h3>${m.id?'Edit':'Add'} calories</h3>${inp('kcal','Calories (kcal)',m.kcal||'','inputmode=decimal autofocus placeholder=500')}${inp('desc','Description (optional)',m.desc||'','placeholder=Lunch')}`;
+ if(m.t==='wt')body=`<h3>Weight</h3>${inp('wd','Date',m.d,'type=date max='+today())}${inp('wkg','Weight (kg)',m.kg||'','inputmode=decimal autofocus placeholder=64.0')}`;
+ if(m.t==='tgt')body=`<h3>Calorie targets</h3><label>Same target every day</label><select id=same><option value=0 ${S.s.same?'':'selected'}>Separate workout / rest</option><option value=1 ${S.s.same?'selected':''}>Same every day</option></select>${inp('tdaily','Daily target',S.s.daily,'inputmode=numeric')}${inp('twork','Workout-day target',S.s.work,'inputmode=numeric')}${inp('trest','Rest-day target',S.s.rest,'inputmode=numeric')}`;
+ return`<div class=ov><div class=sheet>${body}<div class=err>${S.err}</div><div class=row><button class=sec data-a=close>Cancel</button><button data-a=save>Save</button></div></div></div>`}
+function render(){const r=document.documentElement;S.s&&S.s.theme!=='auto'?r.dataset.theme=S.s.theme:delete r.dataset.theme;if(S.s)for(const k of['accent','corner','btn','tint','size'])r.dataset[k]=S.s[k];const a=$('#app');
+ if(!S.p){a.innerHTML=wizard();return}
+ a.innerHTML=`<main>${views[S.view]()}</main><nav>${['home','weight','history','settings'].map(v=>`<button class="${S.view===v?'on':''}" data-a=nav data-v=${v}>${svg(ic[v])}${v[0].toUpperCase()+v.slice(1)}</button>`).join('')}</nav>${S.modal?modal():''}`}
+/* ---------- actions ---------- */
+const val=id=>$('#'+id).value.trim(),num=id=>Number(val(id).replace(',','.'));
+function readProfile(){const age=num('age'),height=num('height'),weight=num('weight');
+ if(!(age>=10&&age<=100))return'Age must be between 10 and 100.';if(!(height>=100&&height<=250))return'Height must be between 100 and 250 cm.';if(!(weight>=25&&weight<=400))return'Weight must be between 25 and 400 kg.';return{age,height,weight}}
+async function putWeight(d,kg){const i=S.weights.findIndex(x=>x.date===d);i<0?S.weights.push({date:d,kg}):S.weights[i].kg=kg;sortW();await db.weights.put({date:d,kg})}
+const A={
+ sched(t){const i=+t.dataset.i;if(!S.p){const d=S.draft;d.activity=val('activity');d.goal=val('goal');d.schedule=d.schedule||defaults().schedule;d.schedule[i]=d.schedule[i]?0:1}else{S.s.schedule[i]=S.s.schedule[i]?0:1;kv('settings',S.s)}},
+ async next(){S.err='';if(S.step===0){const r=readProfile();if(typeof r==='string'){S.err=r;return}Object.assign(S.draft,r,{sex:val('sex')})}
+  else{Object.assign(S.draft,{activity:val('activity'),goal:val('goal')});const d=S.draft;S.p={age:d.age,height:d.height,weight:d.weight,sex:d.sex,activity:d.activity,goal:d.goal==='none'?null:d.goal};S.s.schedule=d.schedule||S.s.schedule;await kv('profile',S.p);await putWeight(today(),d.weight);await recalc();return}
+  S.step=1},
+ back(){S.step=0;S.draft.activity=val('activity');S.draft.goal=val('goal')},
+ nav(t){S.view=t.dataset.v;S.err='';S.pt=null;window.scrollTo(0,0)},
+ toggle(t){const d=t.dataset.d;S.over[d]=!isWork(d);kv('over',S.over)},
+ hdate(t){if(t.value&&t.value<=today())S.hdate=t.value},
+ period(t){S.period=+t.dataset.v;S.pt=null},accent(t){S.s.accent=t.dataset.k;kv('settings',S.s)},pt(t){S.pt=t.dataset.d},
+ addcal(t){S.err='';S.modal={t:'cal',d:t.dataset.d}},
+ editcal(t){const e=S.entries.find(x=>x.id===t.dataset.id);S.err='';S.modal={t:'cal',id:e.id,d:e.date,kcal:e.kcal,desc:e.desc}},
+ async delcal(t){if(!confirm('Delete this entry?'))return;S.entries=S.entries.filter(x=>x.id!==t.dataset.id);await db.entries.delete(t.dataset.id)},
+ addwt(t){const d=t.dataset.d,w=S.weights.find(x=>x.date===d);S.err='';S.modal={t:'wt',d,kg:w?w.kg:''}},
+ async delwt(t){if(!confirm('Delete this weight entry?'))return;S.weights=S.weights.filter(x=>x.date!==t.dataset.d);await db.weights.delete(t.dataset.d)},
+ target(){S.err='';S.modal={t:'tgt'}},close(){S.modal=null},
+ async save(){const m=S.modal;S.err='';
+  if(m.t==='cal'){const k=num('kcal');if(!val('kcal')||!isFinite(k)||k<0){S.err='Enter calories as a number, 0 or more.';return}
+   if(m.id){const e=S.entries.find(x=>x.id===m.id);e.kcal=k;e.desc=val('desc');await db.entries.put(e)}else{const e={id:crypto.randomUUID(),date:m.d,kcal:k,desc:val('desc'),created:Date.now()};S.entries.push(e);await db.entries.put(e)}}
+  if(m.t==='wt'){const k=num('wkg'),d=val('wd');if(!d||d>today()){S.err='Pick a date that is not in the future.';return}if(!(k>=25&&k<=400)){S.err='Weight must be 25 to 400 kg.';return}await putWeight(d,Math.round(k*10)/10)}
+  if(m.t==='tgt'){const a=[num('tdaily'),num('twork'),num('trest')];if(a.some(x=>!isFinite(x)||x<=0||x>10000)){S.err='Targets must be positive numbers.';return}Object.assign(S.s,{same:val('same')==='1',daily:a[0],work:a[1],rest:a[2],manual:true});await kv('settings',S.s)}
+  S.modal=null},
+ async saveprof(){S.err='';const r=readProfile();if(typeof r==='string'){S.err=r;return}const old=nowW();
+  S.p=Object.assign({},S.p,{age:r.age,height:r.height,sex:val('sex'),activity:val('activity'),goal:val('goal')==='none'?null:val('goal')});await kv('profile',S.p);
+  if(r.weight!==old)await putWeight(today(),r.weight);
+  if(!S.s.manual||confirm('Your details changed. Recalculate your targets? This will replace your custom numbers.'))await recalc()},
+ async recalc(){if(!S.s.manual||confirm('Replace your custom targets with the calculated ones?'))await recalc()},
+ async savecfg(){const a=[num('deficit'),num('surplus'),num('diff')];if(a.some(x=>!isFinite(x)||x<0||x>1000)){S.err='Use numbers from 0 to 1000.';return}Object.assign(S.s,{deficit:a[0],surplus:a[1],diff:a[2]});await kv('settings',S.s);if(!S.s.manual)await recalc()},
+ async saveprefs(){S.s.theme=val('theme');S.s.dateFmt=val('dfmt');await kv('settings',S.s)},
+ export(){const b=new Blob([JSON.stringify({app:'caltrack',v:1,profile:S.p,settings:S.s,over:S.over,entries:S.entries,weights:S.weights})],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`caltrack-${today()}.json`;a.click()},
+ async reset(){if(!confirm('Delete ALL your data on this device? This cannot be undone.'))return;await Promise.all([db.kv.clear(),db.entries.clear(),db.weights.clear()]);Object.assign(S,{p:null,s:defaults(),over:{},entries:[],weights:[],step:0,draft:{},view:'home'})}};
+document.addEventListener('click',async e=>{const t=e.target.closest('[data-a]');if(!t||t.tagName==='INPUT')return;try{await A[t.dataset.a](t)}catch(x){console.error(x);alert('Something went wrong: '+x.message)}render()});
+document.addEventListener('change',async e=>{const t=e.target;try{if(['theme','corner','btn','tint','size'].includes(t.id)&&S.s){S.s[t.id]=t.value;await kv('settings',S.s);render();return}if(t.dataset.a==='hdate'){A.hdate(t)}
+ if(t.id==='imp'&&t.files[0]){const j=JSON.parse(await t.files[0].text()),ok=j&&j.app==='caltrack'&&j.profile&&['age','height','weight'].every(k=>typeof j.profile[k]==='number')&&Array.isArray(j.entries)&&Array.isArray(j.weights)&&j.entries.every(x=>x&&typeof x.id==='string'&&/^\d{4}-\d\d-\d\d$/.test(x.date)&&typeof x.kcal==='number'&&x.kcal>=0)&&j.weights.every(x=>x&&/^\d{4}-\d\d-\d\d$/.test(x.date)&&typeof x.kg==='number');
+  if(!ok){alert('This file is not a valid CalTrack backup. Nothing was changed.');return}
+  if(!confirm('Replace your current data with this backup?'))return;await Promise.all([db.kv.clear(),db.entries.clear(),db.weights.clear()]);await kv('profile',j.profile);await kv('settings',Object.assign(defaults(),j.settings||{}));await kv('over',j.over||{});await db.entries.bulkPut(j.entries);await db.weights.bulkPut(j.weights);await load()}}catch(x){alert('Import failed: '+x.message)}if(t.dataset.a==='hdate'||t.id==='imp')render()});
+load().then(()=>{if(!S.p)S.s=defaults();render()});
+</script></body></html>
